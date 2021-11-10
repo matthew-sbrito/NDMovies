@@ -7,9 +7,7 @@ export const Container = styled.div`
   background-color: #222;
   width: 100vw;
   height: 100vh;
-  * {
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  }
+
   .link-auth {
     position: absolute;
     top: 25px;

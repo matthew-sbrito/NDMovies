@@ -1,27 +1,19 @@
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/auth";
-import { toast } from "react-toastify";
 
 import { Container, InputContainer } from "./styles";
 import { Link } from "react-router-dom";
 import TitleAuth from "../../components/TitleAuth";
 
 const Login: React.FC = () => {
-  const { signIn, signed } = useAuth();
+  const { signIn } = useAuth();
 
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
-  const notifyError = () => toast.error(" Login ou senha inválidos!");
-
   async function handleLogin(event: any): Promise<void> {
     event.preventDefault();
-
     await signIn(login, password);
-
-    if (!signed) {
-      notifyError();
-    }
   }
 
   return (
@@ -29,9 +21,9 @@ const Login: React.FC = () => {
       <Link className="link-auth" to="/register">
         Cadastrar-se
       </Link>
-      <TitleAuth 
-      title="Bem vindo"
-      subtitle="Faça seu login e catalogue seus filmes!"
+      <TitleAuth
+        title="Bem vindo"
+        subtitle="Faça seu login e catalogue seus filmes!"
       />
       <form>
         <div className="inputs">

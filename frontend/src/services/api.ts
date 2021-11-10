@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NDMOVIES_IMDB_BASEURL,
+  baseURL: process.env.REACT_APP_NDMOVIES_API,
 })
 
 export default api;

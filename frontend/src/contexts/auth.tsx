@@ -1,7 +1,9 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
+import { toast } from "react-toastify";
 import { User } from "../entities/User";
 import api from "../services/api";
 import * as auth from "../services/auth";
+import { usePersistState } from "../utils/usePersisteState";
 
 interface IAuthContext {
   user: User | null;
@@ -14,22 +16,16 @@ interface IAuthContext {
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState("");
+  const [user, setUser] = usePersistState<User | null>("@RAuth:user", null);
+  const [token, setToken] = usePersistState<string>("@RAuth:token", "");
 
-  function loadStorageData() {
-    const storagedUser = localStorage.getItem("@RAuth:user");
-    const storagedToken = localStorage.getItem("@RAuth:token");
-
-    if (storagedUser && storagedToken) {
-      api.defaults.headers.common.Authorization = `Bearer ${storagedToken}`;
-
-      setUser(JSON.parse(storagedUser));
-      setToken(storagedToken);
+  function defaultAuthorization() {
+    if (token) {
+      api.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
   }
 
-  useEffect(loadStorageData, []);
+  useEffect(defaultAuthorization, [token]);
 
   async function signIn(login: string, password: string): Promise<void> {
     const response = await auth.signIn({ login, password });
@@ -43,6 +39,12 @@ const AuthProvider: React.FC = ({ children }) => {
       localStorage.setItem("@RAuth:user", JSON.stringify(response.user));
       localStorage.setItem("@RAuth:token", JSON.stringify(response.token));
     }
+
+    if (!!response.user) {
+      toast.success(`Bem vindo ${response.user.name}!`);
+    } else {
+      toast.error("Login ou senha inválidos!");
+    }
   }
 
   function signOut() {
@@ -53,18 +55,18 @@ const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, token, user, signIn, signOut }}
+      value={{ signed: Boolean(user), token, user, signIn, signOut }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
 
-const useAuth = () =>{
+const useAuth = () => {
   const context = useContext(AuthContext);
 
   return context;
 };
 
 export default AuthProvider;
-export { useAuth }
+export { useAuth };

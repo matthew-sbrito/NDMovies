@@ -1,6 +1,6 @@
-import { IThemeProps } from './../../contexts/theme';
+import { DefaultTheme } from "styled-components"
 
-const ndmovie: IThemeProps = {
+const ndmovie: DefaultTheme = {
   title: 'ndmovie',
   backgroundColor: '#eee'
 }
