@@ -1,3 +1,4 @@
+import { classToPlain } from 'class-transformer';
 import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
@@ -31,7 +32,7 @@ class AuthenticateUserService {
       expiresIn: '1d',
     });
 
-    return token;
+    return { token, user: classToPlain(user) };
   }
 }
 
