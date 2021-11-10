@@ -9,6 +9,6 @@ export const getMovies = async (endpoint: string): Promise<any> => {
   const url = `${baseUrl}/${endpoint}`;
   const response = await axios.get(url);
   const json = response.data;
-
+  
   return json;
 }
