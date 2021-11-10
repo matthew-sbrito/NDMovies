@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/auth";
 import { authRoutes } from "./auth.routes";
 import { mainRoutes } from "./main.routes";
 
-const MainRoutes: React.FC = (): JSX.Element => {
+const MainRoutes: React.FC = () => {
   const { signed } = useAuth();
   
   const main = useRoutes([mainRoutes]);

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "./api";
 import { User } from "../entities/User";
 
 interface IRequestAuth {
@@ -12,10 +12,8 @@ interface IAuthResponse {
 }
 
 export const signIn = async ({ login, password }: IRequestAuth): Promise<IAuthResponse> => {
-  const baseUrl = process.env.REACT_APP_NDMOVIES_API;
- 
   try {
-    const response = await axios.post(`${baseUrl}/login`,{
+    const response = await api.post(`/login`,{
       login,
       password
     });

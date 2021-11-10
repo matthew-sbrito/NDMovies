@@ -3,42 +3,39 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
   height: 100%;
   
   #handleLogin,
   #handleRegister{
-    width: 150px;
-    padding: 8px;
+    width: 200px;
+    padding: 10px;
     border: none;
-    border-radius: 10px;
     color: #fff;
     font-weight: bold;
     font-size: 17px;
-    background-color: #ee5454;
+    background-color: #e50914;
+    cursor: pointer;
   }
-  .form{
+  form{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    /* margin-top: -100px; */
+    height: 60%;
   }
 `;
 
 export const InputContainer = styled.div`
- margin: 15px 0px;
+ margin: 35px 0px;
  display: flex;
  flex-direction: column;
- label{
-
- }
+ 
  input{
-   box-shadow: 5px 5px 10px 5px rgba(0,0,0,.1);
-   border-radius: 7px;
    border: none;
+   border-bottom: 2px solid #e50914;
    padding: 8px 10px;
    outline: none;
    width: 300px;
@@ -47,5 +44,7 @@ export const InputContainer = styled.div`
 `;
 
 export const Title = styled.div`
-
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
 `;

@@ -14,47 +14,39 @@ export const Container = styled.div`
     position: absolute;
     top: 25px;
     right: 25px;
-    padding: 10px 15px;
+    padding: 10px 12px;
     background-color: #e50914;
     border-radius: 5px;
     text-decoration: none;
     color: #eee;
     font-weight: bold;
-    min-width: 150px;
+    min-width: 120px;
     text-align: center;
-    opacity: 0.8;
+    opacity: 0.7;
     transition: all ease-in-out 500ms;
   }
   
   .link-auth:hover {
     opacity: 1;
+    transform: scale(1.1);
   }
 `;
 
 export const Content = styled.div`
-  position: fixed;
-  width: 40%;
-  right: 0;
-  height: 100%;
-  background-color: #eee;
-  box-shadow: 5px 0px 15px 5px rgba(255,255,255,0.5);
+  background-color: #fff;
+  padding: 20px;
+  border-top: 5px solid #e50914;
+  height: 550px;
+  width: 450px;
   display: flex;
   justify-content: center;
   align-items: center;
- 
-  @media(max-width: 1000px) {
-   &{
-     width: 100%;
-   }
-  }
-`;
-
-export const ImageContainer = styled.div`
-  width: 60%;
-  height: 100%;
+  margin-top: 40px;
 `;
 
 export const Title = styled.div`
+  position: absolute;
+  top: 20px;
   font-size: 50px;
   color: #eee;
 `;

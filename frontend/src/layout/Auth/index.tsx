@@ -1,16 +1,16 @@
 import React from "react";
 import { Outlet } from "react-router";
 
-import { Container, ImageContainer, Title, Content } from "./styles";
+import { Container, Title, Content } from "./styles";
+
+import GlobalStyle from '../../styles/globalAuth';
 
 const Auth: React.FC = () => {
     
   return (
     <Container>
-      <ImageContainer>
+        <GlobalStyle />
         <Title> NDMovies </Title>
-        <img src={`image`} alt="" />
-      </ImageContainer>
       <Content>
         <Outlet />
       </Content>
