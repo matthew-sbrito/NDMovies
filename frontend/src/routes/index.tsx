@@ -9,7 +9,7 @@ const MainRoutes: React.FC = () => {
   const { signed } = useAuth();
   
   const main = useRoutes([mainRoutes]);
-  const auth = useRoutes([authRoutes]); 
+  const auth = useRoutes([mainRoutes, authRoutes]); 
 
   return <> {signed ? main : auth} </>;
 };

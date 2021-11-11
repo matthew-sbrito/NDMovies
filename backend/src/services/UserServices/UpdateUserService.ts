@@ -61,14 +61,14 @@ class UpdateUserService {
       throw new Error("Error update user!");
     }
   }
-  async addMovie(idUser: string, idMovie: string): Promise<User> {
+  async addMovie(userId: string, movieId: string): Promise<User> {
     try {
       const user = await this.repository.findOne({
-        id: idUser,
+        id: userId,
       });
 
       const movie = await this.movieRepositories.findOne({
-        id: idMovie,
+        id: movieId,
       });
 
       user.movies.push(movie);
@@ -81,14 +81,14 @@ class UpdateUserService {
     }
   }
 
-  async removeMovie(idUser: string, idMovie: string) {
+  async removeMovie(userId: string, movieId: string) {
     try {
       const user = await this.repository.findOne({
-        id: idUser,
+        id: userId,
       });
 
       const movieToRemove = await this.movieRepositories.findOne({
-        id: idMovie,
+        id: movieId,
       });
 
       user.movies = user.movies.filter((movie) => {

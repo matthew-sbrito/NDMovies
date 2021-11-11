@@ -18,7 +18,7 @@ const Login: React.FC = () => {
 
   return (
     <Container>
-      <Link className="link-auth" to="/register">
+      <Link className="link-auth" to="/auth/register">
         Cadastrar-se
       </Link>
       <TitleAuth

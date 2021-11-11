@@ -1,3 +1,4 @@
+import { classToPlain } from 'class-transformer';
 import { getCustomRepository } from 'typeorm';
 import { MoviesRepositories } from "~/repositories/MoviesRepositories";
 
@@ -13,6 +14,14 @@ class CreateMovieService {
 
     const moviesRepositories = getCustomRepository(MoviesRepositories);
 
+    const movieExists = await moviesRepositories.findOne({
+      idIMDb
+    })
+
+    if(movieExists){
+      return classToPlain(movieExists);
+    }
+
     const movie = moviesRepositories.create({
       idIMDb,
       title,
@@ -22,7 +31,7 @@ class CreateMovieService {
 
     await moviesRepositories.save(movie);
 
-    return movie;
+    return classToPlain(movie);
   }
 }
 

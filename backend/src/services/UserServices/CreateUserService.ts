@@ -1,7 +1,9 @@
+import { classToPlain } from 'class-transformer';
 import { getCustomRepository } from "typeorm";
 import { UsersRepositories } from "~/repositories/UsersRepositories";
 import { hash } from "bcryptjs";
 import { User } from "~/entities/User";
+import { sign } from "jsonwebtoken";
 
 interface IUserRequest {
   name: string;
@@ -10,7 +12,7 @@ interface IUserRequest {
 }
 
 class CreateUserService {
-  async execute({ name, login, password }: IUserRequest): Promise<User> {
+  async execute({ name, login, password }: IUserRequest){
     const usersRepository = getCustomRepository(UsersRepositories);
 
     if (!login) {
@@ -34,7 +36,13 @@ class CreateUserService {
 
     await usersRepository.save(user);
 
-    return user;
+    const token = sign({ login: user.login }, process.env.NDMOVIE_JWT, {
+      subject: user.id,
+      expiresIn: '1d',
+    });
+
+    return { token, user: classToPlain(user) };
+
   }
 }
 

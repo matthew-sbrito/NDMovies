@@ -6,11 +6,11 @@ import Login from "../views/Auth/Login";
 import Register from "../views/Auth/Register";
 
 const authRoutes = {
-  path: '/',
+  path: 'auth',
   element: <Auth/>,
   children:[
-    { path: '', element: <Navigate to="/login"/> },
-    { path: '*', element: <Navigate to="/login"/> },
+    { path: '', element: <Navigate to="/auth/login"/> },
+    { path: '*', element: <Navigate to="/auth/login"/> },
     { path: 'login', element: <Login />  },
     { path: 'register', element:  <Register /> },
   ],

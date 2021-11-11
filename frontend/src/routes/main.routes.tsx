@@ -11,8 +11,6 @@ const mainRoutes = {
     { path: '*', element: <Navigate to='/home'/> },
     { path: '', element: <Navigate to='/home'/> },
     { path: '/home', element: <Home /> },
-    { path: '/home', element: <Home /> },
-    { path: '/home', element: <Home /> },
   ],
 };
 

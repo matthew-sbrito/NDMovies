@@ -1,14 +1,59 @@
 import axios from 'axios';
 
-axios.defaults.headers.common['x-rapidapi-key'] = process.env.NDMOVIES_RAPID_APPKEY ?? '';
+const api = axios.create({
+  baseURL: process.env.REACT_APP_IMDB_BASEURL,
+})
 
-const baseUrl = process.env.NDMOVIES_IMDB_BASEURL;
+api.defaults.headers.common['x-rapidapi-key'] = process.env.REACT_APP_RAPID_APPKEY ?? '';
 
-export const getMovies = async (endpoint: string): Promise<any> => {
-  
-  const url = `${baseUrl}/${endpoint}`;
-  const response = await axios.get(url);
-  const json = response.data;
-  
-  return json;
+interface ISearchRequest{
+  d: any[];
+  q: string,
+  v: number,
 }
+
+export const findMovieSearch = async (search: string): Promise<ISearchRequest | undefined > => {
+  try {
+    const response = await api.get('auto-complete',{
+      params: {q: search}
+    })
+    return response.data;
+  } catch (error) {
+    console.error(error);    
+  }
+}
+
+export const findMovieById = async (id: string): Promise<any> => {
+  try {
+    const response = await api.get('title/get-details',{
+      params: {tconst: id}
+    })
+    return response.data;
+  } catch (error) {
+    console.error(error);    
+  }
+}
+
+export const findDetailsById = async (id: string): Promise<any> => {
+  try {
+    const response = await api.get('title/get-overview-details',{
+      params: {
+        tconst: id, 
+        currentCountry: 'PT'
+      }
+    })
+    return response.data; 
+  } catch (error) {
+    console.error(error);    
+  }
+}
+
+export const findMoviesCategory = async (): Promise<any> => {
+  try {
+    
+  } catch (error) {
+    
+  }
+}
+
+export default api;

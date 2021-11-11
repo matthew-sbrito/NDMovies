@@ -10,6 +10,7 @@ interface IAuthContext {
   token: string;
   signed: boolean;
   signIn(login: string, password: string): Promise<void>;
+  register(name: string, login: string, password: string): Promise<void>;
   signOut(): void;
 }
 
@@ -29,21 +30,33 @@ const AuthProvider: React.FC = ({ children }) => {
 
   async function signIn(login: string, password: string): Promise<void> {
     const response = await auth.signIn({ login, password });
+    verify(response, "Login ou senha inválidos!");
+  }
+  async function register(
+    name: string,
+    login: string,
+    password: string
+  ): Promise<void> {
+    const response = await auth.register({
+      name,
+      login,
+      password,
+    });
+    verify(response, "Ocorreu um erro ao cadastrar!");
+  }
 
+  function verify(response: auth.IAuthResponse, msgError: string) {
     if (response.user && response.token) {
       api.defaults.headers.common.Authorization = `Bearer ${response.token}`;
 
       setUser(response.user);
       setToken(response.token);
-
-      localStorage.setItem("@RAuth:user", JSON.stringify(response.user));
-      localStorage.setItem("@RAuth:token", JSON.stringify(response.token));
     }
 
     if (!!response.user) {
       toast.success(`Bem vindo ${response.user.name}!`);
     } else {
-      toast.error("Login ou senha inválidos!");
+      toast.error(msgError);
     }
   }
 
@@ -55,7 +68,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signed: Boolean(user), token, user, signIn, signOut }}
+      value={{ signed: Boolean(user), token, user, signIn, register, signOut }}
     >
       {children}
     </AuthContext.Provider>

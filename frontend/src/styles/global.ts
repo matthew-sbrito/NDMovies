@@ -1,6 +1,9 @@
-import styled, { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
+:root{
+  
+}
 *{
   margin: 0;
   padding: 0;
@@ -13,34 +16,4 @@ export default createGlobalStyle`
   -ms-user-select: none;
   user-select: none;
 }
-
-`;
-
-export const Template = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  background-color: ${(props: any) => props.theme.colors.background};
-  color: ${(props: any) => props.theme.colors.text};
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 100px 1fr 100px;
-  grid-template-areas:
-    "Header"
-    "Main"
-    "Footer";
-  overflow-x: hidden;
-
-  header {
-    grid-area: Header;
-    background-color: ${(props: any) => props.theme.colors.primary};
-  }
-
-  main {
-    grid-area: Main;
-  }
-
-  footer {
-    grid-area: Footer;
-    background-color: ${(props: any) => props.theme.colors.primary};
-  }
 `;

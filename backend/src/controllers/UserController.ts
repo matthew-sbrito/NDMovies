@@ -39,13 +39,13 @@ class UserController {
 
     const createUserService = new CreateUserService();
 
-    const user = await createUserService.execute({
+    const { user, token } = await createUserService.execute({
       name,
       login,
       password,
     });
 
-    return response.json({ user });
+    return response.status(201).json({ user, token });
   }
 
   async update(

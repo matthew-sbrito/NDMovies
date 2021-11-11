@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import TitleAuth from '../../components/TitleAuth';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import TitleAuth from "../../components/TitleAuth";
+import { useAuth } from "../../contexts/auth";
 
-import { Container, InputContainer } from './styles';
+import { Container, InputContainer } from "./styles";
 
 const Register: React.FC = () => {
+  const { register } = useAuth();
 
   const [name, setName] = useState("");
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
+  async function handleRegister(event: any): Promise<void> {
+    event.preventDefault();
+
+    await register(name, login, password);
+  }
+
   return (
     <Container>
-      <Link className="link-auth" to="/login">Entrar</Link>
-      <TitleAuth
-        title="Bem vindo"
-        subtitle="Faça seu cadastro!"
-      />
+      <Link className="link-auth" to="/auth/login">
+        Entrar
+      </Link>
+      <TitleAuth title="Bem vindo" subtitle="Faça seu cadastro!" />
       <form>
         <div className="inputs">
           <InputContainer>
@@ -49,12 +56,12 @@ const Register: React.FC = () => {
             />
           </InputContainer>
         </div>
-        <button id="handleLogin" onClick={()=>{}}>
+        <button id="handleRegister" onClick={handleRegister}>
           Cadastrar-se
         </button>
       </form>
     </Container>
   );
-}
+};
 
 export default Register;
