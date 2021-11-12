@@ -1,3 +1,4 @@
+import { Movie } from '~/entities/Movie';
 import { User } from "~/entities/User";
 import { MoviesRepositories } from "~/repositories/MoviesRepositories";
 import { getCustomRepository } from "typeorm";
@@ -61,7 +62,7 @@ class UpdateUserService {
       throw new Error("Error update user!");
     }
   }
-  async addMovie(userId: string, movieId: string): Promise<User> {
+  async addMovie(userId: string, movieId: string): Promise<Movie[]> {
     try {
       const user = await this.repository.findOne({
         id: userId,
@@ -70,14 +71,18 @@ class UpdateUserService {
       const movie = await this.movieRepositories.findOne({
         id: movieId,
       });
-
-      user.movies.push(movie);
+      
+      if (user.movies) {
+        user.movies = [ ...user.movies, movie ];
+      } else {
+        user.movies = [ movie ];
+      }
 
       await this.repository.save(user);
 
-      return user;
+      return user.movies;
     } catch (error) {
-      throw new Error("Error update movie in user!");
+      throw new Error("Error update movie in user!" + error);
     }
   }
 
@@ -91,9 +96,9 @@ class UpdateUserService {
         id: movieId,
       });
 
-      user.movies = user.movies.filter((movie) => {
-        movie.id !== movieToRemove.id;
-      });
+      // user.movies = user.movies.filter((movie) => {
+      //   movie.id !== movieToRemove.id;
+      // });
 
       await this.repository.save(user);
 

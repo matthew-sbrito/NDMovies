@@ -8,6 +8,7 @@ export const Container = styled.footer`
   /* flex-direction: column; */
   justify-content: center;
   align-items: center;
+  height: 60px;
   span{
     margin: 5px;
   }

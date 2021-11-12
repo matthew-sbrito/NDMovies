@@ -23,7 +23,7 @@ const Login: React.FC = () => {
       </Link>
       <TitleAuth
         title="Bem vindo"
-        subtitle="Faça seu login e catalogue seus filmes!"
+        subtitle="Faça o login para catalogar seus filmes!"
       />
       <form>
         <div className="inputs">

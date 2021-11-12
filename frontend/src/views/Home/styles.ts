@@ -1,25 +1,16 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-height: 100vh;
+min-height: 130vh;
 background-color: #111;
 
-.image{
-  height: 70vh;
-  
-  .shadow-vertical{
-    width: inherit;
-    height: inherit;
-    background: linear-gradient(to top, #111 10%, transparent 60%);
-  }
-  .shadow-horizontal{
-    width: inherit;
-    height: inherit;
-    background: linear-gradient(to right, #111 10%, transparent 60%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 70px 0 200px 35px;
+.more-info{
+  position: absolute;
+  cursor: pointer;
+  top: 100px;
+  right: 50px;
+  img{
+    width: 50px;
   }
 }
 

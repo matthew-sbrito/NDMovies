@@ -1,41 +1,42 @@
-import { findDetailsById } from './IMDb';
 import api from "./api";
 
 class MovieServices {
-
   addMovie = async (item: any): Promise<any> => {
-    
-    const movie = await findDetailsById(item.id);
-    const description =  movie.plotSummary.text;
-
-    const data = { 
-      idimdb: item.id,
-      title: item.l,
-      description,
-      image: item.i.imageUrl,
+    const data = {
+      title: item.title,
+      idimdb: item.id.replace("/title/", "").replace("/", ""),
+      description: item.description?.text ?? '',
+      image: item.image.url,
     };
-    
-    const response = await api.post('/movies', data);
-    const json = response.data;
-    
-    return json;
-  }
 
-  addMovieInUser = async (item: any): Promise<any> => {
+    const response = await api.post("/movies", data);
+    console.log(response.statusText);
     
-    const response = await api.post('movie');
     const json = response.data;
-    
+    console.log(json);
+
     return json;
-  }
+  };
 
   removeMovieInUser = async (item: any): Promise<any> => {
-
-    const response = await api.delete('movie');
+    const response = await api.delete("movie");
     const json = response.data;
-    
+
     return json;
+  };
+
+  containsInUser = async (movieId: string): Promise<any> =>{
+
+    const id = movieId.replace("/title/", "").replace("/", "");
+  
+    const response = await api.get('/movies/contains',{
+      params: { movie: id}
+    });
+  
+    const { contains } = response.data;
+  
+    return contains;
   }
 }
 
-export { MovieServices }
+export { MovieServices };

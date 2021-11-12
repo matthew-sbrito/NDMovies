@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { User } from '~/entities/User';
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 @Entity("movies")
@@ -8,7 +9,7 @@ class Movie{
   readonly id: string;
 
   @Column({ name: "id_imdb"})
-  idIMDb: string;
+  idimdb: string;
 
   @Column()
   title: string;
@@ -18,6 +19,9 @@ class Movie{
 
   @Column()
   image: string;
+
+  @ManyToMany(type => User, user => user.movies)
+  users: User[]
 
   @CreateDateColumn({ name: "created_at" })
   createdAt: Date;

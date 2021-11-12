@@ -4,7 +4,7 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import GlobalStyle from "../../styles/global";
 
-import { Template, ContentMain } from "./styles";
+import { Template } from "./styles";
 
 const Main: React.FC = () => {
   return (
@@ -12,9 +12,7 @@ const Main: React.FC = () => {
       <GlobalStyle />
       <Template>
         <Header />
-        <ContentMain className="content-main">
-          <Outlet />
-        </ContentMain>
+        <Outlet />
         <Footer />
       </Template>
     </>

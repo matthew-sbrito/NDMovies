@@ -16,7 +16,13 @@ routes.get(
 );
 
 routes.get(
-  '/api/movies/:id',
+  '/api/movies/contains',
+  ensureAuthenticated,
+  movieController.containUser,
+);
+
+routes.get(
+  '/api/movies/user',
   ensureAuthenticated,
   movieController.findAllByUser,
 );
@@ -26,12 +32,6 @@ routes.post(
   ensureAuthenticated,
   movieController.create,
 );
-
-// routes.put(
-//   '/api/movies/login/:id',
-//   ensureAuthenticated,
-//   movieController.update,
-// );
 
 routes.delete(
   '/api/movies/:id',

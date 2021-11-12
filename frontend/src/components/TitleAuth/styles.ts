@@ -7,8 +7,9 @@ export const Container = styled.div`
   align-items: center;
   
   span{
-    margin: 10;
+    margin: 8px;
     font-size: 18px;
     font-weight: bold;
+    text-align: center;
   }
 `;

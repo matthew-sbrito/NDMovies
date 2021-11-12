@@ -18,7 +18,7 @@ class MovieController {
     request: Request,
     response: Response
   ): Promise<Response<string>> {
-    const id = request.query.id;
+    const id = request.user_id;
 
     const listMovieService = new ListMovieService();
 
@@ -45,10 +45,10 @@ class MovieController {
     });
 
     const updateUserService = new UpdateUserService();
-
-    const user = await updateUserService.addMovie(user_id, movie.id);  
     
-    return response.json({ user });
+    const movies = await updateUserService.addMovie(user_id, movie.id);  
+    
+    return response.json({ movies });
   }
 
   async addMovieInUser(
@@ -81,6 +81,21 @@ class MovieController {
     const user = await updateUserService.removeMovie(user_id, movieId);  
     
     return response.json({ user });
+  }
+
+  async containUser(request: Request, response: Response): Promise<Response<string>>{
+    
+    const { user_id } = request;
+
+    const { movie } = request.query;
+
+    if(!movie){
+      return response.status(404).json({ error: 'ID Movie is required!'})
+    }
+    
+    const contains = await new ListMovieService().containsInUser(user_id, `${movie}`);    
+
+    return response.json({ contains })
   }
 }
 

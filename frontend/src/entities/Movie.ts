@@ -1,11 +1,8 @@
 class Movie {
-  readonly id!: string;
-  idIMDb!: string;
+  idimdb!: string;
   title!: string;
   description!: string;
   image!: string;
-  createdAt!: Date;
-  updatedAt!: Date;
 }
 
 export { Movie };

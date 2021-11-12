@@ -18,8 +18,18 @@ class User{
   @Exclude()
   password: string;
   
-  @ManyToMany(()=> Movie)
-  @JoinTable()
+  @ManyToMany(type => Movie, movie => movie.users)
+  @JoinTable({
+    name: "user_movies",
+    joinColumn:{
+      name: 'user_id',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn:{
+      name: 'movie_id',
+      referencedColumnName: 'id',
+    }
+  })
   movies: Movie[]
 
   @CreateDateColumn({ name: "created_at" })
@@ -27,6 +37,7 @@ class User{
 
   @UpdateDateColumn({ name: "updated_at" })
   updatedAt: Date;
+  user: Movie;
 
   constructor(){
     if(!this.id){

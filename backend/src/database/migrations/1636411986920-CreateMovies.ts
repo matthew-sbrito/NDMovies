@@ -38,6 +38,13 @@ export class CreateMovies1636411986920 implements MigrationInterface {
             default: "now()",
           },
         ],
+        foreignKeys:[
+          {
+            columnNames: ["id"],
+            referencedTableName: "users_movies",
+            referencedColumnNames: ["movie_id"],
+          }
+        ]
       })
     );
   }

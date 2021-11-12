@@ -4,6 +4,7 @@ import { Outlet } from "react-router";
 import { Container, Title, Content } from "./styles";
 
 import GlobalStyle from '../../styles/globalAuth';
+import { Link } from "react-router-dom";
 
 const Auth: React.FC = () => {
     
@@ -11,6 +12,7 @@ const Auth: React.FC = () => {
     <Container>
         <GlobalStyle />
         <Title> NDMovies </Title>
+        <Link id="goHome" to="/home">Home</Link>
       <Content>
         <Outlet />
       </Content>

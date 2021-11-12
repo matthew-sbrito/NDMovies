@@ -6,11 +6,9 @@ import { MoviesRepositories } from '~/repositories/MoviesRepositories';
 class ListMovieService{
   
   private repository: MoviesRepositories;
-  private userRepository: UsersRepositories;
   
   constructor(){
-    this.repository = getCustomRepository(MoviesRepositories)
-    this.userRepository = getCustomRepository(UsersRepositories)
+    this.repository = getCustomRepository(MoviesRepositories);
   }
 
   async findAll(){
@@ -22,13 +20,19 @@ class ListMovieService{
     }
   }
 
-  async findByUser(idUser: string){
+  async findByUser(idUser: string){   
     try {
-      const movies = await this.userRepository.findMovies(idUser);
+      const movies = await this.repository.findMovies(idUser);
       return movies;
     } catch (error) {
-      throw new Error('Error fetching movies!');
+      throw new Error('Error fetching movies!' + error);
     }
+  }
+
+  async containsInUser(idUser: string, idMovie: string): Promise<boolean> {
+    const bool = await this.repository.containMovieInUser(idUser, idMovie);
+
+    return bool;
   }
 }
 

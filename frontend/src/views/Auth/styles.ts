@@ -16,7 +16,7 @@ export const Container = styled.div`
     color: #fff;
     font-weight: bold;
     font-size: 17px;
-    background-color: #e50914;
+    background-color: #222;
     cursor: pointer;
   }
   form{
@@ -35,7 +35,7 @@ export const InputContainer = styled.div`
  
  input{
    border: none;
-   border-bottom: 2px solid #e50914;
+   border-bottom: 2px solid #222;
    padding: 8px 10px;
    outline: none;
    width: 300px;

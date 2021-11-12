@@ -36,6 +36,13 @@ export class CreateUsers1636410909987 implements MigrationInterface {
             default: "now()",
           },
         ],
+        foreignKeys:[
+          {
+            columnNames: ["id"],
+            referencedTableName: "users_movies",
+            referencedColumnNames: ["user_id"]
+          }
+        ]
       }),
     );
   }

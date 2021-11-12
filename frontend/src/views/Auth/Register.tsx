@@ -23,7 +23,9 @@ const Register: React.FC = () => {
       <Link className="link-auth" to="/auth/login">
         Entrar
       </Link>
-      <TitleAuth title="Bem vindo" subtitle="Faça seu cadastro!" />
+      <TitleAuth 
+      title="Bem vindo" 
+      subtitle="Faça seu cadastro! E comece a catalogar seus filmes." />
       <form>
         <div className="inputs">
           <InputContainer>
