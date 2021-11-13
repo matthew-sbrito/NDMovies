@@ -15,7 +15,7 @@ class CreateMovieService {
     const moviesRepositories = getCustomRepository(MoviesRepositories);
 
     const movieExists = await moviesRepositories.findOne({
-      idIMDb
+      idimdb: idIMDb
     })
 
     if(movieExists){
@@ -23,7 +23,7 @@ class CreateMovieService {
     }
 
     const movie = moviesRepositories.create({
-      idIMDb,
+      idimdb: idIMDb,
       title,
       description,
       image

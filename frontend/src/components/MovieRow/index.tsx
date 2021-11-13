@@ -12,12 +12,15 @@ const MovieRow: React.FC<IMovieRowProps> = ({ movies, action }: IMovieRowProps) 
   const [currentMovies, setCurrentMovies] = useState([] as Movie[]);
 
   useEffect(() => {
-    const moviesM = movies.map((movie): Movie => {
+    const moviesM = movies.map((movie): any => {
+      
       return {
-        idimdb: movie.id ?? movie.idimdb,
+        id: movie.idimdb ?? movie.id,
         title: movie.l ?? movie.title,
-        description: "",
-        image: movie.i.imageUrl ?? movie.image,
+        description: movie.description ?? '',
+        image:{
+          url: movie.i?.imageUrl ?? movie.image,
+        } 
       };
     });
     setCurrentMovies(moviesM);
@@ -25,11 +28,11 @@ const MovieRow: React.FC<IMovieRowProps> = ({ movies, action }: IMovieRowProps) 
 
   return (
     <Container>
-      {currentMovies.map((movie) => {
+      {currentMovies.map((movie: any) => {
         return (
-          <div key={movie.idimdb} className="movie-item" onClick={() => action(movie)}>
+          <div key={movie.id} className="movie-item" onClick={() => action(movie)}>
             <div className="image-item">
-              <img src={movie.image} alt={movie.title} />
+              <img src={movie.image.url} alt={movie.title} />
             </div>
             <div className="title">{movie.title}</div>
           </div>

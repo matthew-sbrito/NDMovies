@@ -62,25 +62,19 @@ class UpdateUserService {
       throw new Error("Error update user!");
     }
   }
-  async addMovie(userId: string, movieId: string): Promise<Movie[]> {
+  async addMovie(userId: string, movieId: string): Promise<any> {
     try {
-      const user = await this.repository.findOne({
-        id: userId,
-      });
+      const user = await this.repository.findOne({ id: userId }, { relations: ["movies"] });
 
       const movie = await this.movieRepositories.findOne({
-        id: movieId,
+        idimdb: movieId,
       });
-      
-      if (user.movies) {
-        user.movies = [ ...user.movies, movie ];
-      } else {
-        user.movies = [ movie ];
-      }
+
+      user.movies.push(movie);     
 
       await this.repository.save(user);
 
-      return user.movies;
+      return user;
     } catch (error) {
       throw new Error("Error update movie in user!" + error);
     }
@@ -88,23 +82,21 @@ class UpdateUserService {
 
   async removeMovie(userId: string, movieId: string) {
     try {
-      const user = await this.repository.findOne({
-        id: userId,
-      });
+      const user = await this.repository.findOne({ id: userId }, { relations: ["movies"] });
 
       const movieToRemove = await this.movieRepositories.findOne({
-        id: movieId,
+        idimdb: movieId,
       });
-
-      // user.movies = user.movies.filter((movie) => {
-      //   movie.id !== movieToRemove.id;
-      // });
+      
+      user.movies = user.movies.filter((movie) => {
+        return movie.idimdb !== movieToRemove.idimdb;
+      });
 
       await this.repository.save(user);
 
       return user;
     } catch (error) {
-      throw new Error("Error remove movie in user!");
+      throw new Error("Error remove movie in user!" + error);
     }
   }
 }

@@ -7,34 +7,27 @@ const routes = Router();
 // Cotrolador das rotas de usuário.
 const movieController = new MovieController();
 
+// Rotas de filmes
+routes.get("/api/movies", ensureAuthenticated, movieController.findAll);
 
-// Rotas de usuário 
-routes.get(
-  '/api/movies',
-  ensureAuthenticated,
-  movieController.findAll,
-);
+routes.get("/api/movies/:id", ensureAuthenticated, movieController.findOne);
 
 routes.get(
-  '/api/movies/contains',
+  "/api/contains/movies",
   ensureAuthenticated,
-  movieController.containUser,
+  movieController.containUser
 );
 
 routes.get(
-  '/api/movies/user',
+  "/api/user/movies",
   ensureAuthenticated,
-  movieController.findAllByUser,
+  movieController.findAllByUser
 );
 
-routes.post(
-  '/api/movies',
-  ensureAuthenticated,
-  movieController.create,
-);
+routes.post("/api/movies", ensureAuthenticated, movieController.create);
 
 routes.delete(
-  '/api/movies/:id',
+  "/api/movies/:id",
   ensureAuthenticated,
   movieController.removeMovieInUser
 );

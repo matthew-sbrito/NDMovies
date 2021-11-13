@@ -1,14 +1,21 @@
-import { User } from '~/entities/User';
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { User } from "~/entities/User";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { v4 as uuid } from "uuid";
 
 @Entity("movies")
-class Movie{
-  
-  @PrimaryColumn()
+class Movie {
+  @PrimaryGeneratedColumn("increment")
   readonly id: string;
 
-  @Column({ name: "id_imdb"})
+  @Column({ name: "id_imdb" })
   idimdb: string;
 
   @Column()
@@ -34,7 +41,6 @@ class Movie{
       this.id = uuid();
     }
   }
-
 }
 
-export { Movie }
+export { Movie };

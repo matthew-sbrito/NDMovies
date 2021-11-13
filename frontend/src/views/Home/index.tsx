@@ -14,14 +14,13 @@ import MovieRow from "../../components/MovieRow";
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  
+
   const [randomMovie, setRandomMovie] = useState<any>({});
   const [search, setSearch] = useState<string>("");
   const [movies, setMovies] = useState<any>(null);
   const [currentMovie, setCurrentMovie] = useState<any>();
-  
+
   const [modal, setModal] = useState(false);
-  
 
   function handleKeyUp(event: any): void {
     if (event.code === "Enter") {
@@ -36,31 +35,37 @@ const Home: React.FC = () => {
     }
   }
 
-  function openMovie(item: any){
-    setCurrentMovie(item);
+  function openMovie(item: any) {   
+    setCurrentMovie(null);
+    setCurrentMovie({
+      id: item.id ?? '',
+      title: item.title ?? '',
+      image: item.image.url ?? '',
+      description: item.description?.text ?? '',
+    });
     setModal(true);
   }
 
-  const loadAll = useCallback( async () => {
+  const loadAll = useCallback(async () => {
     const randomMovie = await findMovieRandom();
     setRandomMovie(randomMovie);
     setLoading(false);
-  }, [])
+  }, []);
 
   useEffect(() => {
     loadAll();
-  }, [loadAll]);
+  }, []);
 
-  if(loading){
-    return <Loading />
+  if (loading) {
+    return <Loading />;
   }
 
   return (
     <Container>
-      <div className="more-info" onClick={()=> openMovie(randomMovie)}>
+      <div className="more-info" onClick={() => openMovie(randomMovie)}>
         <img src={infoSvg} alt="info" />
       </div>
-      <ImageMovie image={ randomMovie && randomMovie.image.url}/>
+      <ImageMovie image={randomMovie && randomMovie.image.url} />
       <div className="input-box">
         <div>
           <input
@@ -70,15 +75,22 @@ const Home: React.FC = () => {
             value={search}
             placeholder="Buscar filme..."
           />
-          { search ? (
+          {search ? (
             <img src={searchSvg} onClick={handleSearchMovie} alt="search" />
-            ) : (
+          ) : (
             <img src={searchSvg} onClick={() => setSearch("")} alt="search" />
           )}
         </div>
       </div>
-      {movies && <MovieRow movies={movies} action={openMovie}/>}
-     {currentMovie && <ModalMovie  currentItem={currentMovie} show={modal} close={() => setModal(false)}/> }
+      {movies && <MovieRow movies={movies} action={openMovie} />}
+      {currentMovie && (
+        <ModalMovie
+          remove={()=>{}}
+          currentItem={currentMovie}
+          show={modal}
+          close={() => setModal(false)}
+        />
+      )}
     </Container>
   );
 };

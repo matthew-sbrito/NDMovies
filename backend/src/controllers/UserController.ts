@@ -43,7 +43,7 @@ class UserController {
       name,
       login,
       password,
-    });
+    });    
 
     return response.status(201).json({ user, token });
   }

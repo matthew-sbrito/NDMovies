@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Container, Modal } from "./styles";
 
@@ -8,51 +8,39 @@ import { Link } from "react-router-dom";
 import { MovieServices } from "../../services/NDMovie";
 import { Movie } from "../../entities/Movie";
 
+import { SmallLoading } from "../../components/Loading";
+
 interface IModalProps {
   currentItem: any;
   show: boolean;
   close(): void;
+  remove(): void;
 }
 
 const ModalMovie: React.FC<IModalProps> = ({
   currentItem,
   show,
   close,
+  remove
 }: IModalProps) => {
   const { signed } = useAuth();
   const [item, setItem] = useState<Movie>({} as Movie);
+  const [contains, setContains] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  async function loadData(){
-    const id =
-      currentItem.id?.replace("/title/", "").replace("/", "") ??
-      currentItem.idimdb?.replace("/title/", "").replace("/", "");
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    const id = currentItem.id ?? currentItem.idimdb;
 
-    let description =
-      currentItem.description?.text ?? currentItem.description;
-    if (description) {
-      setItem({
-        title: currentItem.title,
-        idimdb: id,
-        description: description,
-        image: currentItem.image.url ?? currentItem.image,
-      });
-    } else {
-      // description = await findById
-      setItem({
-        title: currentItem.title,
-        idimdb: id,
-        description: description,
-        image: currentItem.image.url ?? currentItem.image,
-      });
-
-    }
-  }
-
-  useEffect(() => {
-    loadData()
+    const item = await new MovieServices().getMovie(id);
+    setItem(item);
+    setLoading(false);
+    verifyContains(item);
   }, [currentItem]);
 
-  const [contains, setContains] = useState(false);
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   function handleClick(event: any): void {
     if (
@@ -63,29 +51,44 @@ const ModalMovie: React.FC<IModalProps> = ({
     }
   }
 
-  const verifyContains = async () => {
-    console.log(item);
-    if (signed) {
+  const verifyContains = async (item: any) => {
+    
+    if (signed && item) {
       const service = new MovieServices();
-
       const contains = await service.containsInUser(item.idimdb);
-
+      console.log(item);
       setContains(contains);
     }
   };
 
   async function handleCatalog() {
+    console.log(item.idimdb);    
     const service = new MovieServices();
     await service.addMovie(item);
-    verifyContains();
+    verifyContains(item);
+  }
+  
+  async function handleRemove() {
+    console.log(item.idimdb);    
+    const service = new MovieServices();
+    await service.removeMovieInUser(item);
+    verifyContains(item);
+    remove();
   }
 
-  useEffect(() => {
-    // verifyContains();
-  }, []);
-
-  if (!item) {
-    return <></>;
+  if (loading) {
+    return (
+      <Container className={show ? "show" : ""} onClick={handleClick}>
+        <Modal>
+          <div className="close">
+            <img src={closeSvg} alt="close" />
+          </div>
+          <div className="loading">
+            <SmallLoading />
+          </div>
+        </Modal>
+      </Container>
+    );
   }
 
   return (
@@ -119,7 +122,7 @@ const ModalMovie: React.FC<IModalProps> = ({
                 ""
               )}
               {contains && (
-                <button className="catalogar">Item Catalogado</button>
+                <button onClick={() => handleRemove()} className="catalogar">Remover do catalogo</button>
               )}
             </div>
           </div>

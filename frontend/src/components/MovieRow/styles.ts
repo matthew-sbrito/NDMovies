@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   padding: 20px;
   margin: 20px;
-  width: 100vw;
+  width: 90vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,6 +25,7 @@ export const Container = styled.div`
     }
     .title{
       color: #fff;
+      font-size: 20px;
       font-weight: bold;
     }
   }

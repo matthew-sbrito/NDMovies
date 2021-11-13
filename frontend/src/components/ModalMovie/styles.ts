@@ -45,6 +45,13 @@ export const Modal = styled.div`
       cursor: pointer;
     }
 
+
+  }
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
   .item{
     padding: 40px;

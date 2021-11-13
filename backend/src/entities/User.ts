@@ -1,12 +1,21 @@
 import { Exclude } from "class-transformer";
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Movie } from "./Movie";
 
+
 @Entity("users")
-class User{
-  @PrimaryColumn()
-  readonly id: string;
+class User {
+  @PrimaryGeneratedColumn("increment")
+  id: string;
 
   @Column()
   name: string;
@@ -17,8 +26,8 @@ class User{
   @Column()
   @Exclude()
   password: string;
-  
-  @ManyToMany(type => Movie, movie => movie.users)
+
+  @ManyToMany(() => Movie, movie => movie.users)
   @JoinTable({
     name: "user_movies",
     joinColumn:{
@@ -44,6 +53,10 @@ class User{
       this.id = uuid();
     }
   }
+
+  setId(id: string): void{
+    this.id = id;
+  }
 }
 
-export { User }
+export { User };

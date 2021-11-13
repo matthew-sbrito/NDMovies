@@ -4,4 +4,5 @@ const api = axios.create({
   baseURL: process.env.REACT_APP_NDMOVIES_API,
 })
 
+
 export default api;

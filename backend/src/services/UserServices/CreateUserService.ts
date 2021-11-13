@@ -2,7 +2,6 @@ import { classToPlain } from 'class-transformer';
 import { getCustomRepository } from "typeorm";
 import { UsersRepositories } from "~/repositories/UsersRepositories";
 import { hash } from "bcryptjs";
-import { User } from "~/entities/User";
 import { sign } from "jsonwebtoken";
 
 interface IUserRequest {
@@ -33,14 +32,17 @@ class CreateUserService {
       login,
       password: passwordHash,
     });
-
+    const id = user.id;
     await usersRepository.save(user);
-
+    
+    user.setId(id);   
+    
     const token = sign({ login: user.login }, process.env.NDMOVIE_JWT, {
       subject: user.id,
       expiresIn: '1d',
     });
 
+    
     return { token, user: classToPlain(user) };
 
   }

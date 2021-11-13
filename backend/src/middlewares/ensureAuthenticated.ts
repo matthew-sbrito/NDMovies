@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
+import { getCustomRepository } from "typeorm";
+import { UsersRepositories } from "~/repositories/UsersRepositories";
+import { ListUserService } from "~/services/UserServices/ListUserService";
 
 interface IPayload {
   sub: string;
@@ -8,7 +11,7 @@ interface IPayload {
 /**
  * Método responsável por receber o token e autenticar o usuário na aplicação.
  */
-function ensureAuthenticated(
+async function ensureAuthenticated(
   request: Request,
   response: Response,
   next: NextFunction
@@ -26,7 +29,8 @@ function ensureAuthenticated(
   // Validar se o token é válido
   try {
     const { sub } = verify(token, process.env.NDMOVIE_JWT) as IPayload;
-
+    
+    
     // Recuperar informação do usuário
     request.user_id = sub;
     return next();

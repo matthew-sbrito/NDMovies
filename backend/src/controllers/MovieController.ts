@@ -1,5 +1,5 @@
 import { UpdateUserService } from '~/services/UserServices/UpdateUserService';
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { CreateMovieService } from "~/services/MovieServices/CreateMovieService";
 import { ListMovieService } from "~/services/MovieServices/ListMovieService";
 
@@ -14,15 +14,25 @@ class MovieController {
 
     return response.json({ movies });
   }
-  async findAllByUser(
+  async findOne(
     request: Request,
     response: Response
   ): Promise<Response<string>> {
-    const id = request.user_id;
+
+    const { id } = request.params;
 
     const listMovieService = new ListMovieService();
 
-    const movies = await listMovieService.findByUser(`${id}`);
+    const movie = await listMovieService.findOne(id);
+
+    return response.json({ movie });
+  }
+  async findAllByUser(request: Request, response: Response ): Promise<Response<string>> {
+    const { user_id } = request;
+
+    const listMovieService = new ListMovieService();
+
+    const movies = await listMovieService.findByUser(`${user_id}`);
 
     return response.json({ movies });
   }
@@ -31,24 +41,26 @@ class MovieController {
     request: Request,
     response: Response
   ): Promise<Response<string>> {
-    const { title, idimdb, description, image } = request.body;
+    const { title, id, description, image } = request.body;
 
     const { user_id } = request;
 
     const createMovieService = new CreateMovieService();
 
     const movie = await createMovieService.execute({
-      idIMDb: idimdb,
+      idIMDb: id,
       title,
       description,
       image,
-    });
+    });   
 
+    
     const updateUserService = new UpdateUserService();
     
-    const movies = await updateUserService.addMovie(user_id, movie.id);  
+    const movies = await updateUserService.addMovie(user_id, movie.idimdb);  
     
     return response.json({ movies });
+    
   }
 
   async addMovieInUser(
@@ -74,11 +86,11 @@ class MovieController {
     
     const { user_id } = request;
 
-    const { movieId } = request.params;
+    const { id } = request.params;
 
     const updateUserService = new UpdateUserService();
 
-    const user = await updateUserService.removeMovie(user_id, movieId);  
+    const user = await updateUserService.removeMovie(user_id, id);  
     
     return response.json({ user });
   }
@@ -87,7 +99,7 @@ class MovieController {
     
     const { user_id } = request;
 
-    const { movie } = request.query;
+    const { movie } = request.query;    
 
     if(!movie){
       return response.status(404).json({ error: 'ID Movie is required!'})

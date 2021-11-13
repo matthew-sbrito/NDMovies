@@ -19,6 +19,17 @@ class ListMovieService{
       throw new Error('Error fetching movies!');
     }
   }
+ 
+  async findOne(id: string){
+    try {
+      const movie = await this.repository.findOne({
+        idimdb: id,
+      });
+      return classToPlain(movie);
+    } catch (error) {
+      throw new Error('Error fetching movies!');
+    }
+  }
 
   async findByUser(idUser: string){   
     try {

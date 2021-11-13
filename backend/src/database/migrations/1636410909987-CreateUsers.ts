@@ -38,9 +38,10 @@ export class CreateUsers1636410909987 implements MigrationInterface {
         ],
         foreignKeys:[
           {
+            name: "UserMovies",
+            referencedTableName: "user_movies",
+            referencedColumnNames: ["user_id"],
             columnNames: ["id"],
-            referencedTableName: "users_movies",
-            referencedColumnNames: ["user_id"]
           }
         ]
       }),

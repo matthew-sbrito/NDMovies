@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useCallback, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import { User } from "../entities/User";
 import api from "../services/api";
@@ -18,15 +18,13 @@ const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = usePersistState<User | null>("@RAuth:user", null);
-  const [token, setToken] = usePersistState<string>("@RAuth:token", "");
+  const [token, setToken] = usePersistState<any>("@RAuth:token", {});
 
-  function defaultAuthorization() {
-    if (token) {
-      api.defaults.headers.common.Authorization = `Bearer ${token}`;
-    }
-  }
+  function defaultAuthorization(){    
+    api.defaults.headers.common.Authorization = `Bearer ${token.token}`;   
+  };
 
-  useEffect(defaultAuthorization, [token]);
+  useEffect(defaultAuthorization,[token]);
 
   async function signIn(login: string, password: string): Promise<void> {
     const response = await auth.signIn({ login, password });
@@ -50,7 +48,7 @@ const AuthProvider: React.FC = ({ children }) => {
       api.defaults.headers.common.Authorization = `Bearer ${response.token}`;
 
       setUser(response.user);
-      setToken(response.token);
+      setToken({ token: response.token});
     }
 
     if (!!response.user) {
@@ -63,12 +61,12 @@ const AuthProvider: React.FC = ({ children }) => {
   function signOut() {
     localStorage.clear();
     setUser(null);
-    setToken("");
+    setToken({});
   }
 
   return (
     <AuthContext.Provider
-      value={{ signed: Boolean(user), token, user, signIn, register, signOut }}
+      value={{ signed: Boolean(user), token: token.token, user, signIn, register, signOut }}
     >
       {children}
     </AuthContext.Provider>

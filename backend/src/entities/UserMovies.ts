@@ -1,9 +1,16 @@
-import { Column, Entity, JoinTable, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinTable,
+  OneToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity("user_movies")
 export class UserMovies {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+  @PrimaryGeneratedColumn("increment")
+  readonly id: number;
 
   @Column()
   @PrimaryColumn()
@@ -15,7 +22,4 @@ export class UserMovies {
   @JoinTable({ name: 'movies' })
   movie_id: string;
 
-  constructor(){
-    this.id = 1;
-  }
 }
