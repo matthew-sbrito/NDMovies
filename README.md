@@ -9,3 +9,43 @@ Após instalar as dependências, na pasta backend rode o comando "npm run dev" o
 No banco de dados tem o usuário padrão pedido na documentação.
 
 Lembrando que a API tem limite de requisição por mês. Então possivelmente pedirá nova chave ao utilizá-la.
+
+Algumas imagens da aplicação
+
+> Tela home
+<div>
+  <img src="./images/home_light.png"/>
+</div>
+
+> Pesquisa
+* Tema Light
+<div>
+  <img src="./images/search_light.png"/>
+</div>
+
+* Tema dark
+<div>
+  <img src="./images/search_dark.png"/>
+</div>
+
+> Modal
+* Tema Light
+<div>
+  <img src="./images/modal_light.png"/>
+</div>
+
+* Tema Dark
+<div>
+  <img src="./images/modal2_dark.png"/>
+</div>
+
+> Tela de catalogo
+* Tema Light
+<div>
+  <img src="./images/catalogo_light.png"/>
+</div>
+
+* Tema Dark
+<div>
+  <img src="./images/catalogo_dark.png"/>
+</div>
