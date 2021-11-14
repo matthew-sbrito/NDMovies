@@ -4,18 +4,12 @@ function chooseRandom(): Function {
 
     function chosenRandom(list: any): any {
 
-        let randomChosen = Math.floor(Math.random() * (list.length - 1));
-        let chosen = list[randomChosen];
+        const randomChosen = Math.floor(Math.random() * (list.length - 1));
+        const chosen = list[randomChosen];       
 
-        let repeat = false;
+        const validate = randomList.includes(chosen);       
 
-        randomList.forEach((random: any) => {
-            if (random === chosen) {
-                repeat = true;
-            }
-        });
-
-        return repeat ? chosenRandom(list) : chosen;
+        return validate ? chosenRandom(list) : chosen;
     }
 
     return chosenRandom;

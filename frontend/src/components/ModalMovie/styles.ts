@@ -23,7 +23,7 @@ export const Container = styled.div`
 export const Modal = styled.div`
   height: 600px;
   width: 1200px;
-  background-color: #111;
+  background-color: ${props => props.theme.primaryColor};
   border-radius: 8px;
   position: relative;
 
@@ -35,7 +35,6 @@ export const Modal = styled.div`
     top: 15px;
     right: 15px;
     background-color: #f30000;
-    color: #f30000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,7 +79,7 @@ export const Modal = styled.div`
    padding: 40px;
 
   .infos{
-    color: #fff;
+    color: ${props => props.theme.secondaryColor};
 
     .title,
     .description{
@@ -95,8 +94,8 @@ export const Modal = styled.div`
     button, a{
       padding: 15px;
       border: none;
-      color: #111;
-      background-color: #fff;
+      color: ${props => props.theme.primaryColor};
+      background-color: ${props => props.theme.secondaryColor};
       min-width: 250px;
       font-weight: bold;
       font-size: 18px;

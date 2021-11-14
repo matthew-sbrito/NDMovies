@@ -1,35 +1,46 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { DefaultTheme } from "styled-components";
-import { ndmovie } from "../styles/theme/ndmovie";
 import { usePersistState } from "../utils/usePersisteState";
 
-import * as Styled from "styled-components";
+import { ThemeProvider } from "styled-components";
+import light from "../styles/theme/light";
+import dark from "../styles/theme/dark";
 
-interface IThemeContext {
+interface IMyThemeContext {
   theme: DefaultTheme;
   toggleTheme(): void;
 }
 
-const ThemeContext = createContext<IThemeContext>({} as IThemeContext);
+const MyThemeContext = createContext<IMyThemeContext>({} as IMyThemeContext);
 
-const ThemeProvider: React.FC = ({ children }) => {
-  const [theme, setTheme] = usePersistState<DefaultTheme>("theme", ndmovie);
+const MyThemeProvider: React.FC = ({ children }) => {
+  const [titleTheme, setTitleTheme] = usePersistState<string>("theme", light.title);
 
-  function toggleTheme(): void {
-    // const chooseTheme = theme.
-  }
+  const [theme, setTheme] = useState<DefaultTheme>({} as DefaultTheme);
+
+  const toggleTheme = () => {
+    let changeTheme = titleTheme === "light" ? dark.title : light.title;  
+    setTitleTheme(changeTheme);
+  };
+
+  useEffect(() => {
+    const chooseTheme = titleTheme === "light" ? light : dark;
+    setTheme(chooseTheme);
+  }, [titleTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <Styled.ThemeProvider theme={theme}>{children}</Styled.ThemeProvider>
-    </ThemeContext.Provider>
+    <MyThemeContext.Provider value={{ theme, toggleTheme }}>
+      <ThemeProvider theme={theme}>
+        {children}
+      </ThemeProvider>
+    </MyThemeContext.Provider>
   );
 };
 
-const useTheme = (): IThemeContext => {
-  const context = useContext(ThemeContext);
+const useMyTheme = (): IMyThemeContext => {
+  const context = useContext(MyThemeContext);
 
   return context;
 };
 
-export { ThemeProvider, useTheme };
+export { MyThemeProvider, useMyTheme };

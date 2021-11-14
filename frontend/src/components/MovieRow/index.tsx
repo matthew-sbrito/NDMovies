@@ -4,35 +4,19 @@ import { Movie } from "../../entities/Movie";
 import { Container } from "./styles";
 
 interface IMovieRowProps {
-  movies: any[];
-  action(item: any): any;
+  movies: Movie[];
+  action(movie: Movie): any;
 }
 
 const MovieRow: React.FC<IMovieRowProps> = ({ movies, action }: IMovieRowProps) => {
-  const [currentMovies, setCurrentMovies] = useState([] as Movie[]);
-
-  useEffect(() => {
-    const moviesM = movies.map((movie): any => {
-      
-      return {
-        id: movie.idimdb ?? movie.id,
-        title: movie.l ?? movie.title,
-        description: movie.description ?? '',
-        image:{
-          url: movie.i?.imageUrl ?? movie.image,
-        } 
-      };
-    });
-    setCurrentMovies(moviesM);
-  }, [movies]);
 
   return (
     <Container>
-      {currentMovies.map((movie: any) => {
+      {movies.map((movie: Movie) => {
         return (
-          <div key={movie.id} className="movie-item" onClick={() => action(movie)}>
+          <div key={movie.idimdb} className="movie-item" onClick={() => action(movie)}>
             <div className="image-item">
-              <img src={movie.image.url} alt={movie.title} />
+              <img src={movie.image} alt={movie.title} />
             </div>
             <div className="title">{movie.title}</div>
           </div>

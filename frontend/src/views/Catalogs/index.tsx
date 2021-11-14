@@ -1,43 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SmallLoading } from "../../components/Loading";
 import ModalMovie from "../../components/ModalMovie";
 import MovieRow from "../../components/MovieRow";
 import NotMovie from "../../components/NotMovie";
+import { useAuth } from "../../contexts/auth";
+import { Movie } from "../../entities/Movie";
+import api from "../../services/api";
 import { MovieServices } from "../../services/NDMovie";
 
 import { Container } from "./styles";
 
 const Catalogs: React.FC = () => {
-  const [currentMovie, setCurrentMovie] = useState<any | null>(null);
-  const [movies, setMovies] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  function openMovie(item: any) {
-    
-    setCurrentMovie(null);
-    setCurrentMovie({
-      id: item.id ?? item.idimdb,
-      title: item.title ?? "",
-      image: item.image.url ?? item.image,
-      description: item.description.text ?? item.description,
-    });
+  const { token } = useAuth();
+
+  const [currentMovie, setCurrentMovie] = useState<Movie>({} as Movie);
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  const [modal, setModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  function openMovie(movie: Movie) {
+    setCurrentMovie({} as Movie);
+    setCurrentMovie(movie);
     setModal(true);
   }
 
-  async function loadAll() {
-    const moviesCatalogs = await new MovieServices().findAllCatalogs();
-    console.log(moviesCatalogs);
-    
-    if (moviesCatalogs) {
+  const loadAll = useCallback(async () => {
+    if(token){
+      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      const moviesCatalogs = await new MovieServices().findAllCatalogs();
+
       setMovies(moviesCatalogs);
+      setLoading(false);
     }
-    setLoading(false);
-  }
+  }, [token]);
 
   useEffect(() => {
     loadAll();
-  }, []);
+  }, [loadAll]);
 
   return (
     <Container>
@@ -57,9 +58,9 @@ const Catalogs: React.FC = () => {
           )}
           {modal && (
             <ModalMovie
-              remove={()=> loadAll()}
+              remove={() => loadAll()}
               show={modal}
-              currentItem={currentMovie}
+              idimdb={currentMovie.idimdb}
               close={() => setModal(false)}
             />
           )}

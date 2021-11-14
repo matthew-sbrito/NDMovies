@@ -18,13 +18,29 @@ const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = usePersistState<User | null>("@RAuth:user", null);
-  const [token, setToken] = usePersistState<any>("@RAuth:token", {});
+  const [token, setToken] = usePersistState<string>("@RAuth:token", "");
 
-  function defaultAuthorization(){    
-    api.defaults.headers.common.Authorization = `Bearer ${token.token}`;   
-  };
+  const verifyToken = useCallback(
+    async (token: string) => {
+      const verifyUser = await auth.verifyUser(token);
+      if (!verifyUser) {
+        setUser(null);
+        setToken("");
+      }
+    },
+    [setToken, setUser]
+  );
 
-  useEffect(defaultAuthorization,[token]);
+  const defaultAuthorization = useCallback(async () => {
+    await verifyToken(token);
+    
+    api.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+  }, [verifyToken, token]);
+
+  useEffect(() => { 
+    defaultAuthorization()
+  }, [defaultAuthorization]);
 
   async function signIn(login: string, password: string): Promise<void> {
     const response = await auth.signIn({ login, password });
@@ -43,16 +59,14 @@ const AuthProvider: React.FC = ({ children }) => {
     verify(response, "Ocorreu um erro ao cadastrar!");
   }
 
-  function verify(response: auth.IAuthResponse, msgError: string) {
-    if (response.user && response.token) {
-      api.defaults.headers.common.Authorization = `Bearer ${response.token}`;
-
-      setUser(response.user);
-      setToken({ token: response.token});
+  function verify({ user, token }: auth.IAuthResponse, msgError: string) {
+    if (!!user && !!token) {
+      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      setUser(user);
+      setToken(token);
     }
-
-    if (!!response.user) {
-      toast.success(`Bem vindo ${response.user.name}!`);
+    if (!!user) {
+      toast.success(`Bem vindo ${user.name}!`);
     } else {
       toast.error(msgError);
     }
@@ -61,12 +75,19 @@ const AuthProvider: React.FC = ({ children }) => {
   function signOut() {
     localStorage.clear();
     setUser(null);
-    setToken({});
+    setToken("");
   }
 
   return (
     <AuthContext.Provider
-      value={{ signed: Boolean(user), token: token.token, user, signIn, register, signOut }}
+      value={{
+        signed: Boolean(user),
+        token,
+        user,
+        signIn,
+        register,
+        signOut,
+      }}
     >
       {children}
     </AuthContext.Provider>

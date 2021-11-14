@@ -7,49 +7,70 @@ interface IRequestAuth {
 }
 
 export interface IAuthResponse {
-  token: string,
-  user: User,
+  token: string;
+  user: User;
 }
 
-export const signIn = async ({ login, password }: IRequestAuth): Promise<IAuthResponse> => {
+export const signIn = async ({
+  login,
+  password,
+}: IRequestAuth): Promise<IAuthResponse> => {
   try {
-    const response = await api.post(`/login`,{
+    const response = await api.post(`/login`, {
       login,
-      password
+      password,
     });
 
-    if(response.status !== 200){
+    if (response.status !== 200) {
       return {} as IAuthResponse;
     }
 
-    return response.data;  
-
+    return response.data;
   } catch (error) {
     return {} as IAuthResponse;
   }
 };
 
-interface IRequestAuthResgister{
+interface IRequestAuthResgister {
   login: string;
   password: string;
   name: string;
 }
 
-export const register = async ({ name, login, password }: IRequestAuthResgister): Promise<IAuthResponse> => {
+export const register = async ({
+  name,
+  login,
+  password,
+}: IRequestAuthResgister): Promise<IAuthResponse> => {
   try {
-    const response = await api.post(`/users`,{
+    const response = await api.post(`/users`, {
       name,
       login,
-      password
-    });  
+      password,
+    });
 
-    if(response.status !== 201){
+    if (response.status !== 201) {
       return {} as IAuthResponse;
     }
 
-    return response.data;  
-
+    return response.data;
   } catch (error) {
     return {} as IAuthResponse;
+  }
+};
+
+export const verifyUser = async (token: string): Promise<User | null> => {  
+  try {
+    const response = await api.get("/verify/user", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const { user } = response.data;
+
+    return user;
+  } catch (error) {
+    return null;
   }
 };

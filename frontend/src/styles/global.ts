@@ -1,9 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
-:root{
-  
-}
 *{
   margin: 0;
   padding: 0;
@@ -15,5 +12,16 @@ export default createGlobalStyle`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+::-webkit-scrollbar {
+    width: 8px;
+}
+ 
+::-webkit-scrollbar-track {
+    background-color: #555;
+}
+ 
+::-webkit-scrollbar-thumb {
+    background-color: #ddd;
 }
 `;

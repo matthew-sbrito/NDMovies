@@ -11,14 +11,16 @@ import ModalMovie from "../../components/ModalMovie";
 import { Container } from "./styles";
 import ImageMovie from "../../components/ImageMovie";
 import MovieRow from "../../components/MovieRow";
+import { Movie } from "../../entities/Movie";
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [randomMovie, setRandomMovie] = useState<any>({});
+  const [randomMovie, setRandomMovie] = useState<Movie>({} as Movie);
+  const [currentMovie, setCurrentMovie] = useState<Movie>({} as Movie);
+  
   const [search, setSearch] = useState<string>("");
-  const [movies, setMovies] = useState<any>(null);
-  const [currentMovie, setCurrentMovie] = useState<any>();
+  const [movies, setMovies] = useState<Movie[]>([]);
 
   const [modal, setModal] = useState(false);
 
@@ -30,31 +32,27 @@ const Home: React.FC = () => {
 
   async function handleSearchMovie(): Promise<void> {
     const responseMovies = await findMovieSearch(search);
-    if (responseMovies) {
-      setMovies(responseMovies.d);
-    }
+    console.log(responseMovies);
+    setMovies(responseMovies!);
+    
   }
 
-  function openMovie(item: any) {   
-    setCurrentMovie(null);
-    setCurrentMovie({
-      id: item.id ?? '',
-      title: item.title ?? '',
-      image: item.image.url ?? '',
-      description: item.description?.text ?? '',
-    });
+  function openMovie(movie: Movie) { 
+    console.log(movie);      
+    setCurrentMovie({} as Movie);
+    setCurrentMovie(movie);
     setModal(true);
   }
 
   const loadAll = useCallback(async () => {
     const randomMovie = await findMovieRandom();
-    setRandomMovie(randomMovie);
+    setRandomMovie(randomMovie!);
     setLoading(false);
   }, []);
 
   useEffect(() => {
     loadAll();
-  }, []);
+  }, [loadAll]);
 
   if (loading) {
     return <Loading />;
@@ -65,7 +63,7 @@ const Home: React.FC = () => {
       <div className="more-info" onClick={() => openMovie(randomMovie)}>
         <img src={infoSvg} alt="info" />
       </div>
-      <ImageMovie image={randomMovie && randomMovie.image.url} />
+      <ImageMovie image={randomMovie && randomMovie.image} />
       <div className="input-box">
         <div>
           <input
@@ -86,7 +84,7 @@ const Home: React.FC = () => {
       {currentMovie && (
         <ModalMovie
           remove={()=>{}}
-          currentItem={currentMovie}
+          idimdb={currentMovie.idimdb}
           show={modal}
           close={() => setModal(false)}
         />

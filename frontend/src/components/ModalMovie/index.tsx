@@ -11,36 +11,47 @@ import { Movie } from "../../entities/Movie";
 import { SmallLoading } from "../../components/Loading";
 
 interface IModalProps {
-  currentItem: any;
+  idimdb: string;
   show: boolean;
   close(): void;
   remove(): void;
 }
 
 const ModalMovie: React.FC<IModalProps> = ({
-  currentItem,
+  idimdb,
   show,
   close,
   remove
 }: IModalProps) => {
+
   const { signed } = useAuth();
-  const [item, setItem] = useState<Movie>({} as Movie);
+
+  const [movie, setMovie] = useState<Movie>({} as Movie);
   const [contains, setContains] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const verifyContains = useCallback(async (movie: Movie) => {  
+    if (signed && movie) {
+      const service = new MovieServices();
+      const contains = await service.containsInUser(movie);
+      setContains(contains);
+    }
+  }, [signed]);
+
   const loadData = useCallback(async () => {
     setLoading(true);
-    const id = currentItem.id ?? currentItem.idimdb;
 
-    const item = await new MovieServices().getMovie(id);
-    setItem(item);
+    const item = await new MovieServices().getMovie(idimdb);
+    
+    setMovie(item!);
+    verifyContains(item!);
+
     setLoading(false);
-    verifyContains(item);
-  }, [currentItem]);
+  }, [idimdb, verifyContains]);
 
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    loadData()
+  }, [loadData])
 
   function handleClick(event: any): void {
     if (
@@ -51,32 +62,20 @@ const ModalMovie: React.FC<IModalProps> = ({
     }
   }
 
-  const verifyContains = async (item: any) => {
-    
-    if (signed && item) {
-      const service = new MovieServices();
-      const contains = await service.containsInUser(item.idimdb);
-      console.log(item);
-      setContains(contains);
-    }
-  };
-
-  async function handleCatalog() {
-    console.log(item.idimdb);    
-    const service = new MovieServices();
-    await service.addMovie(item);
-    verifyContains(item);
+  async function handleCatalog() { 
+    const service = new MovieServices(); 
+    await service.addMovie(movie);
+    verifyContains(movie);
   }
   
-  async function handleRemove() {
-    console.log(item.idimdb);    
+  async function handleRemove() {   
     const service = new MovieServices();
-    await service.removeMovieInUser(item);
-    verifyContains(item);
+    await service.removeMovieInUser(movie);
+    verifyContains(movie);
     remove();
   }
 
-  if (loading) {
+  if (loading || !movie) {
     return (
       <Container className={show ? "show" : ""} onClick={handleClick}>
         <Modal>
@@ -99,17 +98,15 @@ const ModalMovie: React.FC<IModalProps> = ({
         </div>
         <div className="item">
           <div className="img-current">
-            <img src={item.image} alt="img-current" />
+            <img src={movie.image} alt="img-current" />
           </div>
           <div className="content">
             <div className="infos">
               <div className="title">
-                <h1>{item.title}</h1>
+                <h1>{movie.title}</h1>
               </div>
               <div className="description">
-                {item.description
-                  ? item.description
-                  : "Não foi possível carregar a descrição deste filme! :("}
+                {movie.description ?? "Não foi possível carregar a descrição deste filme! :("}
               </div>
             </div>
             <div className="button-catalogar">

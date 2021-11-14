@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.header`
   position: fixed;
@@ -14,20 +14,42 @@ export const Container = styled.header`
   background: transparent;
   transition: all ease 0.5s;
   
-  &.black{
-    background-color: #222;
+  nav .switch-theme{
+    position: absolute;
+    top: 30px;
+    right: 180px;
   }
-  .title{
+  &.black {
+    background-color: ${ props => props.theme.primaryColor};
+    color: ${ props => props.theme.secondaryColor};
+
+    .btn-action button {
+      color: ${ props => props.theme.secondaryColor};
+      border: 2px solid ${props => props.theme.secondaryColor};
+      background-color: transparent;
+      &:hover {
+        color: ${ props => props.theme.primaryColor};
+        border: 2px solid ${ props => props.theme.secondaryColor};
+        background-color: ${ props => props.theme.secondaryColor};
+      }
+    }
+
+    nav ul li a,
+    .title {
+      color: ${props => props.theme.secondaryColor};
+    }
+  }
+  .title {
     font-size: 25px;
     font-weight: bold;
     color: #fff;
   }
-  nav ul{
+  nav ul {
     list-style: none;
     display: flex;
-    
-    li{
-      a{
+
+    li {
+      a {
         padding: 25px;
         font-weight: bold;
         margin: 10px;
@@ -36,17 +58,7 @@ export const Container = styled.header`
       }
     }
   }
-  &.black .btn-action button{
-    color: #fff;
-    border: 2px solid #fff;
-    background-color: transparent;
-    &:hover{
-      color: #000;
-      border: 2px solid #000;
-      background-color: #fff;
-    }
-  }
-  .btn-action button{
+  .btn-action button {
     color: #000;
     border: 2px solid #000;
     background-color: #fff;
@@ -58,7 +70,7 @@ export const Container = styled.header`
     cursor: pointer;
     transition: all ease-in-out 500ms;
 
-    &:hover{
+    &:hover {
       color: #fff;
       background-color: #000;
     }
