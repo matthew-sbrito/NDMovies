@@ -142,6 +142,17 @@ class UserController {
 
     return response.json({ user });
   }
+
+  async verifyToken(request: Request ,response: Response){
+    
+    const { user_id } = request;
+
+    const listUserService = new ListUserService();
+    
+    const user = await listUserService.findOne(user_id);
+
+    return response.json({ user });
+  }
 }
 
 export { UserController };

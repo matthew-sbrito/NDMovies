@@ -10,6 +10,11 @@ const userController = new UserController();
 
 // Rotas de usuário 
 routes.get(
+  '/api/verify/user',
+  ensureAuthenticated,
+  userController.verifyToken,
+);
+routes.get(
   '/api/users',
   ensureAuthenticated,
   userController.findAll,

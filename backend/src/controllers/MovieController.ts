@@ -41,14 +41,14 @@ class MovieController {
     request: Request,
     response: Response
   ): Promise<Response<string>> {
-    const { title, id, description, image } = request.body;
+    const { title, idimdb, description, image } = request.body;
 
     const { user_id } = request;
 
     const createMovieService = new CreateMovieService();
 
     const movie = await createMovieService.execute({
-      idIMDb: id,
+      idIMDb: idimdb,
       title,
       description,
       image,
