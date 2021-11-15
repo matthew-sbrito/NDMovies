@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  padding: 20px;
-  margin: 20px;
-  width: 90vw;
+  padding: 40px;
+  width: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,9 +24,11 @@ export const Container = styled.div`
       }
     }
     .title{
+      width: 200px;
       color: #fff;
       font-size: 20px;
       font-weight: bold;
+      flex-wrap: wrap;
     }
   }
 `;

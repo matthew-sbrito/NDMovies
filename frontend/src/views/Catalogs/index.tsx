@@ -1,17 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
+
+import { Movie } from "../../entities/Movie";
+import { MovieServices } from "../../services/NDMovie";
+
+import { useAuth } from "../../contexts/auth";
+
 import { SmallLoading } from "../../components/Loading";
 import ModalMovie from "../../components/ModalMovie";
 import MovieRow from "../../components/MovieRow";
 import NotMovie from "../../components/NotMovie";
-import { useAuth } from "../../contexts/auth";
-import { Movie } from "../../entities/Movie";
-import api from "../../services/api";
-import { MovieServices } from "../../services/NDMovie";
 
 import { Container } from "./styles";
 
 const Catalogs: React.FC = () => {
-
   const { token } = useAuth();
 
   const [currentMovie, setCurrentMovie] = useState<Movie>({} as Movie);
@@ -27,8 +28,7 @@ const Catalogs: React.FC = () => {
   }
 
   const loadAll = useCallback(async () => {
-    if(token){
-      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    if (token) {
       const moviesCatalogs = await new MovieServices().findAllCatalogs();
 
       setMovies(moviesCatalogs);
@@ -51,7 +51,7 @@ const Catalogs: React.FC = () => {
         </div>
       ) : (
         <div className="itens">
-          {movies ? (
+          {movies.length ? (
             <MovieRow movies={movies} action={openMovie} />
           ) : (
             <NotMovie />

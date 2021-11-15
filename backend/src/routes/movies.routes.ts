@@ -8,9 +8,9 @@ const routes = Router();
 const movieController = new MovieController();
 
 // Rotas de filmes
-routes.get("/api/movies", ensureAuthenticated, movieController.findAll);
+routes.get("/api/movies", movieController.findAll);
 
-routes.get("/api/movies/:id", ensureAuthenticated, movieController.findOne);
+routes.get("/api/movies/:id", movieController.findOne);
 
 routes.get(
   "/api/contains/movies",

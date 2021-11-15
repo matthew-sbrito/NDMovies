@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { findMovieRandom, findMovieSearch } from "../../services/IMDb";
+import { Movie } from "../../entities/Movie";
 
 import searchSvg from "../../assets/svg/search.svg";
 import infoSvg from "../../assets/svg/info.svg";
@@ -8,46 +9,39 @@ import infoSvg from "../../assets/svg/info.svg";
 import Loading from "../../components/Loading";
 import ModalMovie from "../../components/ModalMovie";
 
-import { Container } from "./styles";
 import ImageMovie from "../../components/ImageMovie";
 import MovieRow from "../../components/MovieRow";
-import { Movie } from "../../entities/Movie";
+
+import { Container } from "./styles";
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
+  const [modal, setModal] = useState(false);
 
   const [randomMovie, setRandomMovie] = useState<Movie>({} as Movie);
   const [currentMovie, setCurrentMovie] = useState<Movie>({} as Movie);
-  
-  const [search, setSearch] = useState<string>("");
   const [movies, setMovies] = useState<Movie[]>([]);
 
-  const [modal, setModal] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  function handleKeyUp(event: any): void {
-    if (event.code === "Enter") {
-      handleSearchMovie();
+  async function handleSubmit(event: any): Promise<void> {
+    event.preventDefault();
+    if(searchRef.current && searchRef.current.value){     
+      const responseMovies = await findMovieSearch(searchRef.current.value);
+      setMovies(responseMovies!);
     }
   }
 
-  async function handleSearchMovie(): Promise<void> {
-    const responseMovies = await findMovieSearch(search);
-    console.log(responseMovies);
-    setMovies(responseMovies!);
-    
-  }
-
-  function openMovie(movie: Movie) { 
-    console.log(movie);      
+  const openMovie = useCallback((movie: Movie)=>{
     setCurrentMovie({} as Movie);
     setCurrentMovie(movie);
     setModal(true);
-  }
+ },[])
 
   const loadAll = useCallback(async () => {
+    setLoading(false);
     const randomMovie = await findMovieRandom();
     setRandomMovie(randomMovie!);
-    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -64,26 +58,16 @@ const Home: React.FC = () => {
         <img src={infoSvg} alt="info" />
       </div>
       <ImageMovie image={randomMovie && randomMovie.image} />
-      <div className="input-box">
-        <div>
-          <input
-            type="text"
-            onKeyUp={handleKeyUp}
-            onChange={(e) => setSearch(e.target.value)}
-            value={search}
-            placeholder="Buscar filme..."
-          />
-          {search ? (
-            <img src={searchSvg} onClick={handleSearchMovie} alt="search" />
-          ) : (
-            <img src={searchSvg} onClick={() => setSearch("")} alt="search" />
-          )}
-        </div>
+      <div className={`input-box ${movies.length && 'search'}`}>
+        <form onSubmit={handleSubmit}>
+          <input ref={searchRef} type="text" placeholder="Buscar filme..." />
+          <img src={searchSvg} onClick={handleSubmit} alt="search" />
+        </form>
       </div>
       {movies && <MovieRow movies={movies} action={openMovie} />}
       {currentMovie && (
         <ModalMovie
-          remove={()=>{}}
+          remove={() => {}}
           idimdb={currentMovie.idimdb}
           show={modal}
           close={() => setModal(false)}

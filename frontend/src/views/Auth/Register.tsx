@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import TitleAuth from "../../components/TitleAuth";
 import { useAuth } from "../../contexts/auth";
@@ -8,14 +8,19 @@ import { Container, InputContainer } from "./styles";
 const Register: React.FC = () => {
   const { register } = useAuth();
 
-  const [name, setName] = useState("");
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const nameRef = useRef<HTMLInputElement>(null);
+  const loginRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-  async function handleRegister(event: any): Promise<void> {
+  async function handleSubmit(event: any): Promise<void> {
     event.preventDefault();
-
-    await register(name, login, password);
+    if (nameRef.current && loginRef.current && passwordRef.current) {
+      await register(
+        nameRef.current.value,
+        loginRef.current.value,
+        passwordRef.current.value
+      );
+    }
   }
 
   return (
@@ -23,19 +28,19 @@ const Register: React.FC = () => {
       <Link className="link-auth" to="/auth/login">
         Entrar
       </Link>
-      <TitleAuth 
-      title="Bem vindo" 
-      subtitle="Faça seu cadastro! E comece a catalogar seus filmes." />
-      <form>
+      <TitleAuth
+        title="Bem vindo"
+        subtitle="Faça seu cadastro! E comece a catalogar seus filmes."
+      />
+      <form onSubmit={handleSubmit}>
         <div className="inputs">
           <InputContainer>
             <input
               type="text"
-              name="login"
+              name="name"
               placeholder="Nome"
-              value={name}
               autoComplete="off"
-              onChange={(e) => setName(e.target.value)}
+              ref={nameRef}
             />
           </InputContainer>
           <InputContainer>
@@ -43,9 +48,8 @@ const Register: React.FC = () => {
               type="text"
               name="login"
               placeholder="Login"
-              value={login}
+              ref={loginRef}
               autoComplete="off"
-              onChange={(e) => setLogin(e.target.value)}
             />
           </InputContainer>
           <InputContainer>
@@ -53,14 +57,11 @@ const Register: React.FC = () => {
               type="password"
               name="password"
               placeholder="Senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              ref={passwordRef}
             />
           </InputContainer>
         </div>
-        <button id="handleRegister" onClick={handleRegister}>
-          Cadastrar-se
-        </button>
+        <button id="handleRegister">Cadastrar-se</button>
       </form>
     </Container>
   );

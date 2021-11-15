@@ -76,6 +76,7 @@ const AuthProvider: React.FC = ({ children }) => {
     localStorage.clear();
     setUser(null);
     setToken("");
+    toast.success(`Até a próxima!`);
   }
 
   return (

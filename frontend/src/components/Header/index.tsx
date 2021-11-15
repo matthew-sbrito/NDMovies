@@ -18,6 +18,7 @@ const Header: React.FC = () => {
 
   function handleLogout() {
     signOut();
+    setRedirect(true);
   }
 
   const scrollListenner = () => {

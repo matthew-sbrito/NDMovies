@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useAuth } from "../../contexts/auth";
 
 import { Container, InputContainer } from "./styles";
@@ -8,12 +8,14 @@ import TitleAuth from "../../components/TitleAuth";
 const Login: React.FC = () => {
   const { signIn } = useAuth();
 
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const loginRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   async function handleLogin(event: any): Promise<void> {
     event.preventDefault();
-    await signIn(login, password);
+    if(loginRef.current && passwordRef.current){
+      await signIn(loginRef.current.value, passwordRef.current.value);
+    }
   }
 
   return (
@@ -32,9 +34,8 @@ const Login: React.FC = () => {
               type="text"
               name="login"
               placeholder="Login"
-              value={login}
+              ref={loginRef}
               autoComplete="off"
-              onChange={(e) => setLogin(e.target.value)}
             />
           </InputContainer>
           <InputContainer>
@@ -42,8 +43,7 @@ const Login: React.FC = () => {
               type="password"
               name="password"
               placeholder="Senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              ref={passwordRef}
             />
           </InputContainer>
         </div>

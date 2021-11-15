@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Movie } from "../../entities/Movie";
 
 import { Container } from "./styles";
@@ -26,4 +26,4 @@ const MovieRow: React.FC<IMovieRowProps> = ({ movies, action }: IMovieRowProps) 
   );
 };
 
-export default MovieRow;
+export default React.memo(MovieRow);

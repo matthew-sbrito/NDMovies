@@ -22,4 +22,4 @@ const ImageMovie: React.FC<IImageMovieProps> = ({ image }: IImageMovieProps) => 
   );
 }
 
-export default ImageMovie;
+export default React.memo(ImageMovie);

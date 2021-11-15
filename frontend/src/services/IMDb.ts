@@ -49,7 +49,7 @@ export const findMovieById = async (id: string): Promise<Movie | undefined> => {
     const movie = response.data;
 
     const details = await findDetailsById(id);
-    const description = details.plotSummary.text;
+    const description = details.plotSummary?.text;
 
     return new Movie({
       idimdb: movie.id,
@@ -57,7 +57,6 @@ export const findMovieById = async (id: string): Promise<Movie | undefined> => {
       description: description,
       image: movie.image.url,
     });
-    // return { ...movie, description};
   } catch (error) {
     console.error(error);
   }
