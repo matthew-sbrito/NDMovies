@@ -9,7 +9,7 @@ const api = axios.create({
 api.defaults.headers.common["x-rapidapi-key"] =
   process.env.REACT_APP_RAPID_APPKEY ?? "";
 
-interface ISearchRequest {
+interface SearchRequest {
   d: any[];
   q: string;
   v: number;
@@ -29,7 +29,7 @@ export const findMovieSearch = async (
   }
 };
 
-const transformMovies = ({ d }: ISearchRequest): Movie[] => {
+const transformMovies = ({ d }: SearchRequest): Movie[] => {
   const movies = d.map((movie: any): Movie => {
     return {
       idimdb: movie.id,

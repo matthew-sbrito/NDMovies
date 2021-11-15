@@ -3,12 +3,12 @@ import { Movie } from "../../entities/Movie";
 
 import { Container } from "./styles";
 
-interface IMovieRowProps {
+interface MovieRowProps {
   movies: Movie[];
   action(movie: Movie): any;
 }
 
-const MovieRow: React.FC<IMovieRowProps> = ({ movies, action }: IMovieRowProps) => {
+const MovieRow: React.FC<MovieRowProps> = ({ movies, action }: MovieRowProps) => {
 
   return (
     <Container>

@@ -5,7 +5,7 @@ import api from "../services/api";
 import * as auth from "../services/auth";
 import { usePersistState } from "../utils/usePersisteState";
 
-interface IAuthContext {
+interface AuthContextData {
   user: User | null;
   token: string;
   signed: boolean;
@@ -14,7 +14,7 @@ interface IAuthContext {
   signOut(): void;
 }
 
-const AuthContext = createContext<IAuthContext>({} as IAuthContext);
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = usePersistState<User | null>("@RAuth:user", null);
@@ -59,7 +59,7 @@ const AuthProvider: React.FC = ({ children }) => {
     verify(response, "Ocorreu um erro ao cadastrar!");
   }
 
-  function verify({ user, token }: auth.IAuthResponse, msgError: string) {
+  function verify({ user, token }: auth.AuthResponse, msgError: string) {
     if (!!user && !!token) {
       api.defaults.headers.common.Authorization = `Bearer ${token}`;
       setUser(user);

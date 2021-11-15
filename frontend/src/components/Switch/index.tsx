@@ -2,13 +2,13 @@ import React from "react";
 
 import { Container } from "./styles";
 
-interface ISwitchProps{
+interface SwitchProps{
   checked: boolean;
   change(): void;
   icon: string;
 }
 
-const Switch: React.FC<ISwitchProps> = ({ checked, change, icon }) => {
+const Switch: React.FC<SwitchProps> = ({ checked, change, icon }: SwitchProps) => {
 
   return (
     <Container className="switch-theme" icon={icon}>

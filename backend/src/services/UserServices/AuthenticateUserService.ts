@@ -4,13 +4,13 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { UsersRepositories } from '~/repositories/UsersRepositories';
 
-interface IAuthenticateRequest {
+interface AuthenticateRequest {
   login: string;
   password: string;
 }
 
 class AuthenticateUserService {
-  async execute({ login, password }: IAuthenticateRequest) {
+  async execute({ login, password }: AuthenticateRequest) {
     const usersRepositories = getCustomRepository(UsersRepositories);
 
     const user = await usersRepositories.findOne({

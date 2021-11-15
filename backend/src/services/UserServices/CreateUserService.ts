@@ -4,14 +4,14 @@ import { UsersRepositories } from "~/repositories/UsersRepositories";
 import { hash } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
-interface IUserRequest {
+interface UserRequest {
   name: string;
   login: string;
   password: string;
 }
 
 class CreateUserService {
-  async execute({ name, login, password }: IUserRequest){
+  async execute({ name, login, password }: UserRequest){
     const usersRepository = getCustomRepository(UsersRepositories);
 
     if (!login) {

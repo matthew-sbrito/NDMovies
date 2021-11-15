@@ -2,12 +2,12 @@ import React from "react";
 
 import { Container } from "./styles";
 
-interface IProps {
+interface TiteAuthProps {
   title: string;
   subtitle: string;
 }
 
-const TitleAuth: React.FC<IProps> = ({ title, subtitle }: IProps) => {
+const TitleAuth: React.FC<TiteAuthProps> = ({ title, subtitle }: TiteAuthProps) => {
   return (
     <Container>
       <span className="title">{title}</span>

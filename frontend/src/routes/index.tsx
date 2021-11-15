@@ -1,10 +1,11 @@
 import { useRoutes } from "react-router";
 
 import { useAuth } from "../contexts/auth";
-import Catalogs from "../views/Catalogs";
 
 import { authRoutes } from "./auth.routes";
 import { mainRoutes } from "./main.routes";
+
+import Catalogs from "../views/Catalogs";
 
 const MainRoutes: React.FC = () => {
   const { signed } = useAuth();

@@ -5,7 +5,7 @@ import { getCustomRepository } from "typeorm";
 import { UsersRepositories } from "~/repositories/UsersRepositories";
 import { hash } from "bcryptjs";
 
-interface IUserRequest {
+interface UserRequest {
   id: string;
   name?: string;
 }
@@ -19,7 +19,7 @@ class UpdateUserService {
     this.movieRepositories = getCustomRepository(MoviesRepositories);
   }
 
-  async update({ id, name }: IUserRequest): Promise<boolean> {
+  async update({ id, name }: UserRequest): Promise<boolean> {
     try {
       const user = await this.repository.findOne({
         id,

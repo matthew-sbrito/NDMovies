@@ -1,12 +1,12 @@
 import api from "./api";
 import { User } from "../entities/User";
 
-interface IRequestAuth {
+interface RequestAuth {
   login: string;
   password: string;
 }
 
-export interface IAuthResponse {
+export interface AuthResponse {
   token: string;
   user: User;
 }
@@ -14,7 +14,7 @@ export interface IAuthResponse {
 export const signIn = async ({
   login,
   password,
-}: IRequestAuth): Promise<IAuthResponse> => {
+}: RequestAuth): Promise<AuthResponse> => {
   try {
     const response = await api.post(`/login`, {
       login,
@@ -22,16 +22,16 @@ export const signIn = async ({
     });
 
     if (response.status !== 200) {
-      return {} as IAuthResponse;
+      return {} as AuthResponse;
     }
 
     return response.data;
   } catch (error) {
-    return {} as IAuthResponse;
+    return {} as AuthResponse;
   }
 };
 
-interface IRequestAuthResgister {
+interface RequestAuthResgister {
   login: string;
   password: string;
   name: string;
@@ -41,7 +41,7 @@ export const register = async ({
   name,
   login,
   password,
-}: IRequestAuthResgister): Promise<IAuthResponse> => {
+}: RequestAuthResgister): Promise<AuthResponse> => {
   try {
     const response = await api.post(`/users`, {
       name,
@@ -50,12 +50,12 @@ export const register = async ({
     });
 
     if (response.status !== 201) {
-      return {} as IAuthResponse;
+      return {} as AuthResponse;
     }
 
     return response.data;
   } catch (error) {
-    return {} as IAuthResponse;
+    return {} as AuthResponse;
   }
 };
 

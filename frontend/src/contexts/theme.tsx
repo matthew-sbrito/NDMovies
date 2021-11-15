@@ -6,12 +6,12 @@ import { ThemeProvider } from "styled-components";
 import light from "../styles/theme/light";
 import dark from "../styles/theme/dark";
 
-interface IMyThemeContext {
+interface MyThemeContextData {
   theme: DefaultTheme;
   toggleTheme(): void;
 }
 
-const MyThemeContext = createContext<IMyThemeContext>({} as IMyThemeContext);
+const MyThemeContext = createContext<MyThemeContextData>({} as MyThemeContextData);
 
 const MyThemeProvider: React.FC = ({ children }) => {
   const [titleTheme, setTitleTheme] = usePersistState<string>("theme", light.title);
@@ -37,7 +37,7 @@ const MyThemeProvider: React.FC = ({ children }) => {
   );
 };
 
-const useMyTheme = (): IMyThemeContext => {
+const useMyTheme = (): MyThemeContextData => {
   const context = useContext(MyThemeContext);
 
   return context;

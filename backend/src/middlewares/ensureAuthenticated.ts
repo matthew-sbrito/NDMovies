@@ -1,10 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
-import { getCustomRepository } from "typeorm";
-import { UsersRepositories } from "~/repositories/UsersRepositories";
-import { ListUserService } from "~/services/UserServices/ListUserService";
 
-interface IPayload {
+interface Payload {
   sub: string;
 }
 
@@ -28,7 +25,7 @@ async function ensureAuthenticated(
 
   // Validar se o token é válido
   try {
-    const { sub } = verify(token, process.env.NDMOVIE_JWT) as IPayload;
+    const { sub } = verify(token, process.env.NDMOVIE_JWT) as Payload;
     
     
     // Recuperar informação do usuário

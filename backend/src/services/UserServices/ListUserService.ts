@@ -2,7 +2,7 @@ import { FindManyOptions, getCustomRepository } from 'typeorm';
 import { UsersRepositories } from '~/repositories/UsersRepositories';
 import { classToPlain } from 'class-transformer';
 
-interface IOffSet {
+interface OffSet {
   offset: number;
   limit: number;
   where?: object;

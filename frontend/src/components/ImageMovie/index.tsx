@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Container } from './styles';
 
-interface IImageMovieProps{
+interface ImageMovieProps{
   image: string;
 }
 
-const ImageMovie: React.FC<IImageMovieProps> = ({ image }: IImageMovieProps) => {
+const ImageMovie: React.FC<ImageMovieProps> = ({ image }: ImageMovieProps) => {
   return (
     <Container
     style={{

@@ -2,7 +2,7 @@ import { classToPlain } from 'class-transformer';
 import { getCustomRepository } from 'typeorm';
 import { MoviesRepositories } from "~/repositories/MoviesRepositories";
 
-interface IMovieRequest {
+interface MovieRequest {
   idIMDb: string;
   title: string;
   description: string;
@@ -10,7 +10,7 @@ interface IMovieRequest {
 }
 
 class CreateMovieService {
-   async execute({ idIMDb, title, description, image }: IMovieRequest) {
+   async execute({ idIMDb, title, description, image }: MovieRequest) {
 
     const moviesRepositories = getCustomRepository(MoviesRepositories);
 

@@ -1,7 +1,7 @@
 import { MoviesRepositories } from "~/repositories/MoviesRepositories";
 import { getCustomRepository } from "typeorm";
 
-interface IMovieRequest {
+interface MovieRequest {
   id: string;
   title?: string;
   description?: string;
@@ -14,7 +14,7 @@ class UpdateMovieService {
     title,
     description,
     image,
-  }: IMovieRequest): Promise<boolean> {
+  }: MovieRequest): Promise<boolean> {
     const moviesRepositories = getCustomRepository(MoviesRepositories);
 
     try {

@@ -10,19 +10,19 @@ import { Movie } from "../../entities/Movie";
 
 import { SmallLoading } from "../../components/Loading";
 
-interface IModalProps {
+interface ModalProps {
   idimdb: string;
   show: boolean;
   close(): void;
   remove(): void;
 }
 
-const ModalMovie: React.FC<IModalProps> = ({
+const ModalMovie: React.FC<ModalProps> = ({
   idimdb,
   show,
   close,
   remove
-}: IModalProps) => {
+}: ModalProps) => {
 
   const { signed } = useAuth();
 

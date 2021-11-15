@@ -5,6 +5,7 @@ import { Movie } from "../../entities/Movie";
 
 import searchSvg from "../../assets/svg/search.svg";
 import infoSvg from "../../assets/svg/info.svg";
+import closeSvg from "../../assets/svg/close.svg";
 
 import Loading from "../../components/Loading";
 import ModalMovie from "../../components/ModalMovie";
@@ -26,22 +27,22 @@ const Home: React.FC = () => {
 
   async function handleSubmit(event: any): Promise<void> {
     event.preventDefault();
-    if(searchRef.current && searchRef.current.value){     
+    if (searchRef.current && searchRef.current.value) {
       const responseMovies = await findMovieSearch(searchRef.current.value);
       setMovies(responseMovies!);
     }
   }
 
-  const openMovie = useCallback((movie: Movie)=>{
+  const openMovie = useCallback((movie: Movie) => {
     setCurrentMovie({} as Movie);
     setCurrentMovie(movie);
     setModal(true);
- },[])
+  }, []);
 
   const loadAll = useCallback(async () => {
-    setLoading(false);
     const randomMovie = await findMovieRandom();
     setRandomMovie(randomMovie!);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -58,10 +59,14 @@ const Home: React.FC = () => {
         <img src={infoSvg} alt="info" />
       </div>
       <ImageMovie image={randomMovie && randomMovie.image} />
-      <div className={`input-box ${movies.length && 'search'}`}>
+      <div className={`input-box ${movies.length && "search"}`}>
         <form onSubmit={handleSubmit}>
           <input ref={searchRef} type="text" placeholder="Buscar filme..." />
-          <img src={searchSvg} onClick={handleSubmit} alt="search" />
+          {movies.length ? (
+            <img src={closeSvg} onClick={() => setMovies([])} alt="search" />
+          ) : (
+            <img src={searchSvg} onClick={handleSubmit} alt="search" />
+          )}
         </form>
       </div>
       {movies && <MovieRow movies={movies} action={openMovie} />}
